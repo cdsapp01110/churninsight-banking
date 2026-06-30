@@ -1,7 +1,11 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
-export default function StatCard({ label, value, subtitle, trend, icon: Icon }) {
+// trendGood=true means an upward trend is positive (e.g. retention); trendGood=false means upward is bad (e.g. churn rate)
+export default function StatCard({ label, value, subtitle, trend, trendGood = true, icon: Icon }) {
+  const isPositive = trendGood ? trend > 0 : trend < 0;
+  const isNegative = trendGood ? trend < 0 : trend > 0;
+
   return (
     <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm hover:border-slate-700 transition-colors">
       <div className="flex items-start justify-between">
@@ -16,9 +20,9 @@ export default function StatCard({ label, value, subtitle, trend, icon: Icon }) 
               <Icon className="w-5 h-5 text-slate-400" />
             </div>
           )}
-          {trend && (
+          {trend != null && (
             <span className={`flex items-center gap-1 text-xs font-medium ${
-              trend > 0 ? 'text-emerald-400' : trend < 0 ? 'text-red-400' : 'text-slate-500'
+              isPositive ? 'text-emerald-400' : isNegative ? 'text-red-400' : 'text-slate-500'
             }`}>
               {trend > 0 ? <TrendingUp className="w-3 h-3" /> : trend < 0 ? <TrendingDown className="w-3 h-3" /> : <Minus className="w-3 h-3" />}
               {Math.abs(trend)}%

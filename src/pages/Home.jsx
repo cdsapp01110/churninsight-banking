@@ -31,12 +31,12 @@ export default function Home() {
 
   const totalCustomers = 10000;
   const churnedCount = data.filter(d => d.churned).length;
-  const churnRate = data.length ? ((churnedCount / data.length) * 100).toFixed(1) : 0;
+  const churnRate = data.length ? ((churnedCount / data.length) * 100).toFixed(1) : '0.0';
   const avgBalance = data.length
     ? '$' + Math.round(data.reduce((s, d) => s + (d.balance || 0), 0) / data.length).toLocaleString()
     : '$0';
   const criticalCount = data.filter(d => d.segment === 'Critical').length;
-  const scaledCritical = Math.round((criticalCount / data.length) * totalCustomers);
+  const scaledCritical = data.length ? Math.round((criticalCount / data.length) * totalCustomers) : 0;
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -80,9 +80,9 @@ export default function Home() {
         {/* KPI Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard label="Total Customers" value={totalCustomers.toLocaleString()} subtitle="Full dataset" icon={Users} />
-          <StatCard label="Churn Rate" value={`${churnRate}%`} subtitle={`${Math.round((churnedCount / data.length) * totalCustomers).toLocaleString()} churned`} icon={UserX} trend={-2.3} />
+          <StatCard label="Churn Rate" value={`${churnRate}%`} subtitle={`~${data.length ? Math.round((churnedCount / data.length) * totalCustomers).toLocaleString() : 0} churned`} icon={UserX} trend={-2.3} trendGood={false} />
           <StatCard label="Avg Balance" value={avgBalance} subtitle="Across all customers" icon={Activity} />
-          <StatCard label="Critical Risk" value={scaledCritical.toLocaleString()} subtitle="Immediate intervention needed" icon={Shield} trend={5.1} />
+          <StatCard label="Critical Risk" value={scaledCritical.toLocaleString()} subtitle="Immediate intervention needed" icon={Shield} trend={5.1} trendGood={false} />
         </div>
 
         {/* Stack label */}

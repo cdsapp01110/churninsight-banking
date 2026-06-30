@@ -33,7 +33,7 @@ export default function ProductChurn({ data }) {
         <h3 className="text-white font-semibold">Churn by Products Held</h3>
         <p className="text-xs text-slate-500 mt-1">Decision: Optimal product bundling for retention</p>
       </div>
-      <div className="flex items-center gap-6 mt-4">
+      <div className="flex flex-col sm:flex-row items-center gap-6 mt-4">
         <div className="h-48 w-48 flex-shrink-0">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
