@@ -145,13 +145,12 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <p className="text-xs font-medium text-indigo-400 uppercase tracking-widest mb-2">Portfolio Project</p>
+              <p className="text-xs font-medium text-indigo-400 uppercase tracking-widest mb-2">Charlotte, NC · Banking Market</p>
               <h1 className="text-2xl sm:text-4xl font-bold text-white font-heading tracking-tight">
                 Banking Customer Churn Analysis
               </h1>
               <p className="mt-2 text-slate-400 text-sm sm:text-base max-w-2xl">
-                End-to-end ML pipeline predicting customer churn across a 10K-customer banking dataset.
-                Each visualization maps to a retention decision.
+                Churn patterns across a 10,000-customer banking dataset. Every chart here connects to a retention decision someone actually has to make.
               </p>
             </div>
             <div className="flex items-center gap-3 flex-shrink-0 flex-wrap">
@@ -167,7 +166,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
               >
                 <Github className="w-4 h-4" />
-                Project Details
+                Charlotte Market Data
               </Link>
               <a
                 href="https://public.tableau.com/views/BankingCustomerChurnAnalysis"
