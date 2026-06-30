@@ -1,0 +1,67 @@
+{
+  "name": "ChurnCustomer",
+  "type": "object",
+  "properties": {
+    "customer_id": {
+      "type": "string"
+    },
+    "credit_score": {
+      "type": "number"
+    },
+    "geography": {
+      "type": "string",
+      "enum": [
+        "France",
+        "Germany",
+        "Spain"
+      ]
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "Male",
+        "Female"
+      ]
+    },
+    "age": {
+      "type": "number"
+    },
+    "tenure": {
+      "type": "number"
+    },
+    "balance": {
+      "type": "number"
+    },
+    "num_products": {
+      "type": "number"
+    },
+    "has_credit_card": {
+      "type": "boolean"
+    },
+    "is_active_member": {
+      "type": "boolean"
+    },
+    "estimated_salary": {
+      "type": "number"
+    },
+    "churned": {
+      "type": "boolean"
+    },
+    "churn_probability": {
+      "type": "number"
+    },
+    "segment": {
+      "type": "string",
+      "enum": [
+        "Low Risk",
+        "Medium Risk",
+        "High Risk",
+        "Critical"
+      ]
+    }
+  },
+  "required": [
+    "customer_id",
+    "churned"
+  ]
+}
