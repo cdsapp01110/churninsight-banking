@@ -1,77 +1,127 @@
-# Base44 Project
+# ChurnInsight Banking — Charlotte, NC Market Dashboard
 
-Use this repository to run and edit the app locally, then publish changes back through Base44.
+A data-driven churn analysis dashboard focused on the Charlotte, NC banking market.
+It visualizes churn patterns across a 10,000-customer dataset and surfaces
+actionable retention strategies for banking teams.
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+---
 
-## Prerequisites
+## What's inside
 
-1. Clone the repository using the project's Git URL.
-2. Navigate to the project directory.
-3. Install dependencies: `npm install`.
-4. Install the Base44 CLI: `npm install -g base44@latest`.
+| Page | Route | Description |
+|---|---|---|
+| **Dashboard** | `/` | Top-line KPIs, eight analytics charts, retention recommendations, and a CSV export |
+| **Charlotte Market Data** | `/project` | Bank-by-bank churn risk breakdown, demographic context stats, and key takeaways |
 
-See the [Base44 CLI docs](https://docs.base44.com/developers/references/cli/get-started/overview) if you want to run Base44 commands directly.
+---
 
-## Run Locally
+## How to run the app locally
 
-Run the full local development environment from the project root:
+### Option A — Full stack with Base44 CLI (recommended)
+
+This runs both the frontend dev server and the local Base44 backend together.
+
+**1. Install the Base44 CLI (one-time)**
+
+```bash
+npm install -g base44@latest
+```
+
+**2. Clone the repo and install dependencies**
+
+```bash
+git clone <your-repo-url>
+cd <project-folder>
+npm install
+```
+
+**3. Start the development environment**
 
 ```bash
 base44 dev
 ```
 
-`base44 dev` starts the local Base44 development backend and, when this app is configured for it, also starts the frontend dev server for you. Use the frontend URL printed by the command.
+The CLI will print a local URL — open it in your browser to see the live dashboard.
+Hot-reload is on by default; any file change reflects immediately.
 
-For example, when the Base44 project config includes a `serveCommand`, `base44 dev` can launch the frontend too:
+---
 
-```json5
-{
-  "site": {
-    "serveCommand": "npm run dev"
-  }
-}
-```
+### Option B — Frontend only (against the hosted backend)
 
-In a Base44 project this lives in `base44/config.jsonc`.
+Use this if you only want to work on the UI without running the Base44 backend locally.
 
-## Run Only The Frontend
-
-If you only want to work on the frontend against the hosted Base44 backend, run:
-
-```bash
-npm run dev
-```
-
-Open the local URL printed by Vite.
-
-## Use The Hosted Backend
-
-For frontend-only development, create or update `.env.local` in the project root:
+**1. Create a `.env.local` file in the project root**
 
 ```bash
 VITE_BASE44_APP_ID=your_app_id
 VITE_BASE44_APP_BASE_URL=https://your-app.base44.app
 ```
 
-`VITE_BASE44_APP_ID` identifies the Base44 app.
+Replace the values with your actual app ID and hosted URL from the Base44 dashboard.
 
-`VITE_BASE44_APP_BASE_URL` tells the Base44 Vite plugin where to send local `/api` requests. Point it at your deployed Base44 app URL when you want the local frontend to use the hosted backend.
+**2. Start the Vite dev server**
 
-When you use `base44 dev`, the command injects the local Base44 values for you, so `.env.local` is mainly needed for frontend-only workflows.
+```bash
+npm run dev
+```
 
-## Publish Your Changes
+Open the URL printed by Vite — typically `http://localhost:5173`.
 
-After pushing your changes to git, open the Base44 dashboard and publish the app:
+---
+
+## Project structure
+
+```
+src/
+  pages/
+    Home.jsx          # Main dashboard — KPIs, charts, recommendations
+    Project.jsx       # Charlotte market deep-dive — bank table, takeaways
+  components/
+    dashboard/
+      StatCard.jsx        # Reusable KPI card with trend indicator
+      ChurnByGeography.jsx # NC metro churn rate bar chart
+      ChurnByAge.jsx       # Age-band churn area chart
+      FeatureImportance.jsx# Horizontal bar chart of churn drivers
+      ActivityChurn.jsx    # Digital engagement vs. churn correlation
+      ProductChurn.jsx     # Donut chart — products held vs. churn rate
+      SegmentBreakdown.jsx # Risk segment distribution (uses live data)
+      ModelPerformance.jsx # Data sources panel with external links
+    ProtectedRoute.jsx  # Auth guard for protected routes
+    AuthLayout.jsx      # Shared layout for login/register pages
+  api/
+    base44Client.js     # Pre-initialized Base44 SDK client
+base44/
+  entities/
+    ChurnCustomer.jsonc  # Customer schema — credit score, tenure, churn flag, etc.
+```
+
+---
+
+## Deploying changes
+
+After pushing to git, publish from the Base44 dashboard:
 
 ```bash
 base44 dashboard open
 ```
 
-## Docs & Support
+Or open the dashboard directly at [app.base44.com](https://app.base44.com) and hit **Publish**.
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+---
 
-Base44 CLI command reference: [https://docs.base44.com/developers/references/cli/commands/introduction](https://docs.base44.com/developers/references/cli/commands/introduction)
+## Data sources
 
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+All market figures used in the dashboard come from publicly available sources:
+
+- [FDIC](https://www.fdic.gov) — bank deposit and branch data
+- [J.D. Power 2023 US Retail Banking Satisfaction Study](https://www.jdpower.com/business/press-releases/2023-us-retail-banking-satisfaction-study)
+- [CFPB Consumer Complaint Database](https://www.consumerfinance.gov/data-research/consumer-complaints/)
+- [U.S. Census Bureau — Charlotte MSA](https://www.census.gov/quickfacts/charlottemecklenburgcitynorthcarolina)
+- Individual bank investor relations pages (linked inline on each chart tooltip and table row)
+
+---
+
+## Support
+
+Base44 docs: [docs.base44.com](https://docs.base44.com)  
+Base44 support: [app.base44.com/support](https://app.base44.com/support)
