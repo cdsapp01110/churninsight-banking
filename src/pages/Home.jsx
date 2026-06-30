@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Users, UserX, Shield, Activity, ExternalLink, Github } from 'lucide-react';
+import { Users, UserX, Shield, Activity, ExternalLink, Github, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StatCard from '@/components/dashboard/StatCard';
 import ChurnByGeography from '@/components/dashboard/ChurnByGeography';
@@ -38,6 +38,106 @@ export default function Home() {
   const criticalCount = data.filter(d => d.segment === 'Critical').length;
   const scaledCritical = data.length ? Math.round((criticalCount / data.length) * totalCustomers) : 0;
 
+  const handleDownloadCSV = () => {
+    const today = new Date().toISOString().split('T')[0];
+
+    // --- Summary KPIs ---
+    const summaryRows = [
+      ['WEEKLY CHURN METRICS REPORT', `Generated: ${today}`],
+      [],
+      ['SUMMARY KPIs'],
+      ['Metric', 'Value'],
+      ['Total Customers (Dataset)', totalCustomers.toLocaleString()],
+      ['Overall Churn Rate', `${churnRate}%`],
+      ['Estimated Churned Customers', data.length ? Math.round((churnedCount / data.length) * totalCustomers).toLocaleString() : 0],
+      ['Average Customer Balance', avgBalance],
+      ['Critical Risk Customers', scaledCritical.toLocaleString()],
+      [],
+    ];
+
+    // --- Churn by Geography ---
+    const geoRows = [['CHURN BY GEOGRAPHY'], ['Region', 'Customers (Sample)', 'Churn Rate']];
+    ['France', 'Germany', 'Spain'].forEach(geo => {
+      const customers = data.filter(d => d.geography === geo);
+      const churned = customers.filter(d => d.churned);
+      const rate = customers.length ? ((churned.length / customers.length) * 100).toFixed(1) : '0.0';
+      geoRows.push([geo, customers.length, `${rate}%`]);
+    });
+    geoRows.push([]);
+
+    // --- Churn by Segment ---
+    const segRows = [['RISK SEGMENT BREAKDOWN'], ['Segment', 'Customers (Sample)', 'Churn Rate']];
+    ['Low Risk', 'Medium Risk', 'High Risk', 'Critical'].forEach(seg => {
+      const customers = data.filter(d => d.segment === seg);
+      const churned = customers.filter(d => d.churned);
+      const rate = customers.length ? ((churned.length / customers.length) * 100).toFixed(1) : '0.0';
+      segRows.push([seg, customers.length, `${rate}%`]);
+    });
+    segRows.push([]);
+
+    // --- Active vs Inactive ---
+    const active = data.filter(d => d.is_active_member);
+    const inactive = data.filter(d => !d.is_active_member);
+    const activityRows = [
+      ['ACTIVE vs INACTIVE CHURN'],
+      ['Status', 'Customers (Sample)', 'Churn Rate'],
+      ['Active Members', active.length, active.length ? `${((active.filter(d => d.churned).length / active.length) * 100).toFixed(1)}%` : '0.0%'],
+      ['Inactive Members', inactive.length, inactive.length ? `${((inactive.filter(d => d.churned).length / inactive.length) * 100).toFixed(1)}%` : '0.0%'],
+    ];
+    activityRows.push([]);
+
+    // --- Feature Importance ---
+    const featureRows = [
+      ['TOP CHURN DRIVERS (FEATURE IMPORTANCE)'],
+      ['Feature', 'Importance', 'Recommended Action'],
+      ['Activity Status', '23%', 'Re-engagement campaigns'],
+      ['Age', '19%', 'Age-targeted offers'],
+      ['Geography', '16%', 'Regional retention teams'],
+      ['Num Products', '14%', 'Cross-sell optimization'],
+      ['Balance', '11%', 'Balance threshold alerts'],
+      ['Credit Score', '8%', 'Credit improvement programs'],
+      ['Tenure', '5%', 'Loyalty rewards'],
+      ['Salary', '4%', 'Tier-based retention'],
+    ];
+    featureRows.push([]);
+
+    // --- Model Performance ---
+    const modelRows = [
+      ['MODEL PERFORMANCE (Random Forest)'],
+      ['Metric', 'Score'],
+      ['Accuracy', '87.2%'],
+      ['Precision', '83.5%'],
+      ['Recall', '79.1%'],
+      ['F1 Score', '81.3%'],
+      ['AUC-ROC', '0.91'],
+    ];
+    modelRows.push([]);
+
+    // --- Key Recommendations ---
+    const recRows = [
+      ['KEY RECOMMENDATIONS'],
+      ['Priority', 'Action', 'Expected Impact'],
+      ['01', 'Launch re-engagement campaigns for inactive members', 'Reduce churn by 15-20%'],
+      ['02', 'Deploy Germany-specific retention strategy', 'Close 2x churn gap vs France'],
+      ['03', 'Review multi-product customer experience', 'Address fee fatigue for 3-4 product holders'],
+      ['04', 'Age-targeted loyalty programs for 45+ segment', 'Improve retention for highest-risk age group'],
+    ];
+
+    const allRows = [...summaryRows, ...geoRows, ...segRows, ...activityRows, ...featureRows, ...modelRows, ...recRows];
+
+    const csvContent = allRows
+      .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `churn-metrics-${today}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Header */}
@@ -54,7 +154,14 @@ export default function Home() {
                 Each visualization maps to a retention decision.
               </p>
             </div>
-            <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="flex items-center gap-3 flex-shrink-0 flex-wrap">
+              <button
+                onClick={handleDownloadCSV}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                Export CSV
+              </button>
               <Link
                 to="/project"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
