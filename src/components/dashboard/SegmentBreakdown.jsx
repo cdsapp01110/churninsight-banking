@@ -7,6 +7,14 @@ const SEGMENT_COLORS = {
   'Critical': { bg: 'bg-red-500/10', text: 'text-red-400', bar: 'bg-red-500' }
 };
 
+// Charlotte market segment definitions with plain-English context
+const SEGMENT_CONTEXT = {
+  'Low Risk': 'Active digital users, 2 products, direct deposit linked. Minimal intervention needed.',
+  'Medium Risk': 'Occasional logins, one product, no direct deposit. A fee change could push them out.',
+  'High Risk': 'Rare app activity, single product, balance under $500. Reached out to at least once already.',
+  'Critical': 'No digital logins in 60+ days, no direct deposit, no other products. High chance of leaving within 90 days.'
+};
+
 export default function SegmentBreakdown({ data }) {
   const total = data.length;
   const segments = ['Low Risk', 'Medium Risk', 'High Risk', 'Critical'].map(seg => {
@@ -23,10 +31,10 @@ export default function SegmentBreakdown({ data }) {
   return (
     <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
       <div className="mb-1">
-        <h3 className="text-white font-semibold">Risk Segment Breakdown</h3>
-        <p className="text-xs text-slate-500 mt-1">Decision: Prioritize outreach to Critical/High Risk before they churn</p>
+        <h3 className="text-white font-semibold">Customer Risk Segments</h3>
+        <p className="text-xs text-slate-500 mt-1">Charlotte market · Classified by engagement, products, and balance signals</p>
       </div>
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-5">
         {segments.map(seg => {
           const colors = SEGMENT_COLORS[seg.name];
           return (
@@ -38,9 +46,10 @@ export default function SegmentBreakdown({ data }) {
                 </div>
                 <span className="text-xs text-slate-400">{seg.churnRate}% churned</span>
               </div>
-              <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-2 bg-slate-800 rounded-full overflow-hidden mb-1.5">
                 <div className={`h-full rounded-full ${colors.bar} transition-all duration-700`} style={{ width: `${seg.pct}%` }} />
               </div>
+              <p className="text-[11px] text-slate-600 leading-snug">{SEGMENT_CONTEXT[seg.name]}</p>
             </div>
           );
         })}

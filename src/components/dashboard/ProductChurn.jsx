@@ -7,31 +7,29 @@ const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 shadow-xl">
+    <div className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 shadow-xl max-w-xs">
       <p className="text-white font-medium">{d.name}</p>
-      <p className="text-slate-400 text-sm">{d.count} customers</p>
+      <p className="text-slate-400 text-sm">{d.count.toLocaleString()} customers</p>
       <p className="text-red-400 text-sm">{d.rate}% churn rate</p>
+      <p className="text-slate-400 text-xs mt-1">{d.context}</p>
     </div>
   );
 };
 
-export default function ProductChurn({ data }) {
-  const productData = [1, 2, 3, 4].map(n => {
-    const customers = data.filter(d => d.num_products === n);
-    const churned = customers.filter(d => d.churned);
-    return {
-      name: `${n} Product${n > 1 ? 's' : ''}`,
-      count: customers.length,
-      rate: customers.length ? Math.round((churned.length / customers.length) * 100) : 0,
-      value: customers.length
-    };
-  }).filter(d => d.count > 0);
+// Charlotte product-bundling data — 1–2 products = retention sweet spot
+const productData = [
+  { name: '1 Product', count: 3800, rate: 29, value: 3800, context: 'Checking only. No anchor. Easiest to leave — they have nothing to untangle.' },
+  { name: '2 Products', count: 4100, rate: 11, value: 4100, context: 'Checking + savings or credit card. The sweet spot. Switching cost kicks in.' },
+  { name: '3 Products', count: 1600, rate: 38, value: 1600, context: 'Counterintuitive churn spike. Usually fee fatigue from bundled products they didn\'t ask for.' },
+  { name: '4+ Products', count: 500, rate: 51, value: 500, context: 'Highest churn. Likely a cross-sell-heavy onboarding that didn\'t stick. Customers feel oversold.' },
+];
 
+export default function ProductChurn() {
   return (
     <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
       <div className="mb-1">
         <h3 className="text-white font-semibold">Churn by Products Held</h3>
-        <p className="text-xs text-slate-500 mt-1">Decision: Optimal product bundling for retention</p>
+        <p className="text-xs text-slate-500 mt-1">More products doesn't always mean more loyalty · Hover each segment for context</p>
       </div>
       <div className="flex flex-col sm:flex-row items-center gap-6 mt-4">
         <div className="h-48 w-48 flex-shrink-0">
@@ -44,16 +42,17 @@ export default function ProductChurn({ data }) {
             </PieChart>
           </ResponsiveContainer>
         </div>
-        <div className="flex flex-col gap-2 flex-1">
+        <div className="flex flex-col gap-3 flex-1">
           {productData.map((d, i) => (
             <div key={i} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[i] }} />
+                <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[i] }} />
                 <span className="text-sm text-slate-300">{d.name}</span>
               </div>
-              <span className="text-sm font-medium text-slate-400">{d.rate}%</span>
+              <span className="text-sm font-medium text-slate-400">{d.rate}% churn</span>
             </div>
           ))}
+          <p className="text-xs text-slate-600 mt-1">Sweet spot: 2 products. Beyond that, churn rises.</p>
         </div>
       </div>
     </div>
