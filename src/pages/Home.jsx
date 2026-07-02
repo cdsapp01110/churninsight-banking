@@ -14,7 +14,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Users, UserX, Shield, Activity, Download, MapPin } from 'lucide-react';
+import { Users, UserX, Shield, Activity, Download, MapPin, BarChart2, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Dashboard components
@@ -201,11 +201,32 @@ export default function Home() {
                 Export CSV
               </button>
               <Link
+                to="/customer-list"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
+              >
+                <Users className="w-4 h-4" />
+                Customers
+              </Link>
+              <Link
+                to="/market-trends"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
+              >
+                <BarChart2 className="w-4 h-4" />
+                Market Trends
+              </Link>
+              <Link
+                to="/retention-strategy"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
+              >
+                <BookOpen className="w-4 h-4" />
+                Retention
+              </Link>
+              <Link
                 to="/project"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-medium transition-colors"
               >
                 <MapPin className="w-4 h-4" />
-                Charlotte Market Data
+                Charlotte Data
               </Link>
             </div>
 

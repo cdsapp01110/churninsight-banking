@@ -8,12 +8,18 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import Home from '@/pages/Home';
 import Project from '@/pages/Project';
+import CustomerList from '@/pages/CustomerList';
+import MarketTrends from '@/pages/MarketTrends';
+import RetentionStrategy from '@/pages/RetentionStrategy';
 
 const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/project" element={<Project />} />
+      <Route path="/customer-list" element={<CustomerList />} />
+      <Route path="/market-trends" element={<MarketTrends />} />
+      <Route path="/retention-strategy" element={<RetentionStrategy />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
