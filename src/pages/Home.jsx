@@ -26,30 +26,11 @@ import ProductChurn from '@/components/dashboard/ProductChurn';
 import SegmentBreakdown from '@/components/dashboard/SegmentBreakdown';
 import ActivityChurn from '@/components/dashboard/ActivityChurn';
 import ModelPerformance from '@/components/dashboard/ModelPerformance';
-
-// ─── Retention recommendations shown in the bottom-right panel ───────────────
-const RECOMMENDATIONS = [
-  {
-    num: '01',
-    title: 'Catch disengagement at 45 days, not 90',
-    desc: 'Customers who stop logging in rarely come back. The window to re-engage is narrow. A simple push notification or fee waiver at day 45 recovers a meaningful slice of this group.',
-  },
-  {
-    num: '02',
-    title: 'Two products is the retention sweet spot',
-    desc: 'Checking-only accounts leave fast. Two products — checking plus a savings account or credit card — cuts churn by more than half. Three or more actually reverses the trend.',
-  },
-  {
-    num: '03',
-    title: "Charlotte's 18–25 cohort needs a different pitch",
-    desc: "This group is not loyal to institutions. They follow features and rates. If your mobile app has friction or your overdraft fee is higher than a fintech competitor's, they'll be gone within a year.",
-  },
-  {
-    num: '04',
-    title: 'Fees are the #1 complaint in Mecklenburg County',
-    desc: 'CFPB data is public and not subtle. Overdraft fees and maintenance charges are the top reason people close accounts here. Banks that switched to low-fee models saw measurable retention gains.',
-  },
-];
+import RevenueImpact from '@/components/dashboard/RevenueImpact';
+import CohortRetention from '@/components/dashboard/CohortRetention';
+import ChurnTaxonomy from '@/components/dashboard/ChurnTaxonomy';
+import LeadingIndicators from '@/components/dashboard/LeadingIndicators';
+import ActionPlan from '@/components/dashboard/ActionPlan';
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -266,48 +247,58 @@ export default function Home() {
           />
         </div>
 
-        {/* ── Charts Grid ──
-            Two-column layout on large screens; each component is self-contained
-            and uses its own static Charlotte-market dataset.             */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <FeatureImportance />
-          <ChurnByGeography />
-          <ChurnByAge />
-          <ActivityChurn />
-          <ProductChurn />
-          <SegmentBreakdown data={data} />
+        {/* ── Section 1: How much are we losing? ── */}
+        <div>
+          <p className="text-[10px] font-semibold text-indigo-400 uppercase tracking-widest mb-3">① How much are we losing?</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RevenueImpact />
+            <SegmentBreakdown data={data} />
+          </div>
         </div>
 
-        {/* ── Data Sources + Retention Recommendations ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* ── Section 2: Which customers are we losing? ── */}
+        <div>
+          <p className="text-[10px] font-semibold text-indigo-400 uppercase tracking-widest mb-3">② Which customers are we losing?</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ChurnTaxonomy />
+            <FeatureImportance />
+          </div>
+        </div>
 
-          {/* Links to the underlying data sources for every metric on this page */}
-          <ModelPerformance />
+        {/* ── Section 3: When are they most vulnerable? ── */}
+        <div>
+          <p className="text-[10px] font-semibold text-indigo-400 uppercase tracking-widest mb-3">③ When are they most vulnerable?</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <CohortRetention />
+            <ChurnByAge />
+          </div>
+        </div>
 
-          {/* Plain-English actions the dashboard insights map to */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-            <h3 className="text-white font-semibold mb-1">What to Do About It</h3>
-            <p className="text-xs text-slate-500 mb-6">
-              Charlotte-specific retention priorities, ranked by impact
-            </p>
-            <div className="space-y-4">
-              {RECOMMENDATIONS.map(r => (
-                <div
-                  key={r.num}
-                  className="flex gap-4 pb-4 border-b border-slate-800/60 last:border-0 last:pb-0"
-                >
-                  <span className="text-2xl font-bold text-slate-800 font-mono flex-shrink-0">
-                    {r.num}
-                  </span>
-                  <div>
-                    <p className="text-sm font-medium text-white">{r.title}</p>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">{r.desc}</p>
-                  </div>
-                </div>
-              ))}
+        {/* ── Section 4: What behaviors predict that loss? ── */}
+        <div>
+          <p className="text-[10px] font-semibold text-indigo-400 uppercase tracking-widest mb-3">④ What behaviors predict that loss?</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <LeadingIndicators />
+            <div className="grid grid-cols-1 gap-6">
+              <ActivityChurn />
+              <ProductChurn />
             </div>
           </div>
+        </div>
 
+        {/* ── Section 5: Market context + data sources ── */}
+        <div>
+          <p className="text-[10px] font-semibold text-indigo-400 uppercase tracking-widest mb-3">⑤ Market context</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ChurnByGeography />
+            <ModelPerformance />
+          </div>
+        </div>
+
+        {/* ── Section 6: What interventions should we run next? ── */}
+        <div>
+          <p className="text-[10px] font-semibold text-indigo-400 uppercase tracking-widest mb-3">⑥ What interventions should we run next?</p>
+          <ActionPlan />
         </div>
 
         {/* ── Footer ── */}
