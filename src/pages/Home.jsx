@@ -188,7 +188,7 @@ export default function Home() {
                 Banking Customer Churn Analysis
               </h1>
               <p className="mt-2 text-slate-400 text-sm sm:text-base max-w-2xl">
-                Churn patterns across a 10,000-customer banking dataset. Every chart here connects to a retention decision someone actually has to make.
+                Churn patterns across a 10,000-customer banking dataset.
               </p>
             </div>
 
