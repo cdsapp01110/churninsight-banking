@@ -11,6 +11,7 @@ import Project from '@/pages/Project';
 import CustomerList from '@/pages/CustomerList';
 import MarketTrends from '@/pages/MarketTrends';
 import RetentionStrategy from '@/pages/RetentionStrategy';
+import HelpCenter from '@/pages/HelpCenter';
 
 const AuthenticatedApp = () => {
   return (
@@ -20,6 +21,7 @@ const AuthenticatedApp = () => {
       <Route path="/customer-list" element={<CustomerList />} />
       <Route path="/market-trends" element={<MarketTrends />} />
       <Route path="/retention-strategy" element={<RetentionStrategy />} />
+      <Route path="/help-center" element={<HelpCenter />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

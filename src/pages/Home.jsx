@@ -14,7 +14,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Users, UserX, Shield, Activity, Download, MapPin, BarChart2, BookOpen } from 'lucide-react';
+import { Users, UserX, Shield, Activity, Download, MapPin, BarChart2, BookOpen, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Dashboard components
@@ -220,6 +220,13 @@ export default function Home() {
               >
                 <BookOpen className="w-4 h-4" />
                 Retention
+              </Link>
+              <Link
+                to="/help-center"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
+              >
+                <HelpCircle className="w-4 h-4" />
+                Help
               </Link>
               <Link
                 to="/project"
