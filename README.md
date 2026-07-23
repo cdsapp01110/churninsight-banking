@@ -22,8 +22,6 @@ The app is designed to answer key business questions such as:
 - How does market context affect customer retention?
 - What retention actions should be prioritized next?
 
-This project is built to be professional, easy to understand, and user friendly for analysts, product teams, retention teams, and business stakeholders.
-
 ---
 
 ## Features
